@@ -1,0 +1,135 @@
+/* Philosophy.css */
+
+/* Page Layout */
+.philosophy-page {
+    font-family: "Poppins", sans-serif;
+    line-height: 1.8;
+    color: #2c2c2c;
+    background: #f9f9f9;
+    overflow-x: hidden;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    text-align: center;
+    padding: 6rem 2rem;
+    background: linear-gradient(to right, #4a148c, #7b1fa2);
+    color: white;
+  }
+  
+  .hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Teachings Section */
+  .teachings-section {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .teachings-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #4a148c;
+  }
+  
+  .teachings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .teaching-card {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .teaching-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .teaching-card .icon {
+    font-size: 3rem;
+  }
+  
+  .teaching-card h3 {
+    margin: 1rem 0;
+    font-size: 1.8rem;
+  }
+  
+  /* Quotes Section */
+  .quotes-section {
+    padding: 4rem 2rem;
+    background: #c37ae2;
+    color: rgb(0, 0, 0);
+    text-align: center;
+  }
+  
+  .quotes-section h2 {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .quotes-carousel {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .quote-card {
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  .quote-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .quote-card p {
+    font-style: italic;
+    font-size: 1.3rem;
+  }
+  
+  /* Legacy Section */
+  .legacy-section {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .legacy-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #4a148c;
+  }
+  
+  .legacy-section p {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-section h1 {
+      font-size: 2.5rem;
+    }
+  
+    .teachings-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

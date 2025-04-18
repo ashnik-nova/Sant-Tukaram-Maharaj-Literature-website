@@ -1,0 +1,103 @@
+  .hero-section {
+    background: linear-gradient(to right, #ffffff, #d7eff4);
+    font-size: 1.5rem;
+    padding: 60px 40px;
+    text-align: center;
+    color: #000000;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-in-out;
+  }
+  /* Page Background */
+  .abhangas-page {
+    padding: 60px 40px;
+    background: linear-gradient(to bottom, #f8e1c2, #e9c5aa);
+    min-height: 100vh;
+    overflow-x: hidden;
+    animation: fadeInUp 1s ease-in-out;
+  }
+
+  /* Title Section */
+  .abhangas-title {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 600px;
+    color: #5a3314;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Dynamic Abhang Cards */
+  .abhang-card {
+    background: linear-gradient(to right, #fff5e6, #f9dec9);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+
+  .abhang-card:hover {
+    transform: translateY(-1px) scale(1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Abhang Text Styling */
+  .abhang-text {
+    font-size: 1.5rem;
+    font-family: 'Georgia', serif;
+    color: #5a3e2b;
+    line-height: 1.8;
+  }
+
+  .abhang-meaning {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #6d4c41;
+  }
+
+  /* Explore More Button */
+  .explore-more-btn {
+    display: block;
+    width: fit-content;
+    margin: 40px auto;
+    padding: 12px 32px;
+    font-size: 1.2rem;
+    color: white;
+    background: linear-gradient(45deg, #8d5524, #c19a6b);
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .explore-more-btn:hover {
+    background: linear-gradient(45deg, #6d4c41, #8d5524);
+    transform: scale(1.1);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .abhangas-title {
+      font-size: 3rem;
+    }
+
+    .abhang-text {
+      font-size: 1.6rem;
+    }
+
+    .abhang-meaning {
+      font-size: 1.2rem;
+    }
+  }
+
+  /* Fade-in Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

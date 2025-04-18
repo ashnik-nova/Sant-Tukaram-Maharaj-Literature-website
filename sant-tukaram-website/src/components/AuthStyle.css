@@ -1,0 +1,60 @@
+/* src/components/AuthStyle.css */
+
+.auth-container {
+    background: url("/images/ancient-modern-bg.jpg") no-repeat center center/cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Kalam", cursive;
+  }
+  
+  .form-container {
+    background: rgba(255, 248, 220, 0.9);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease;
+  }
+  
+  .title {
+    text-align: center;
+    color: #8b4513;
+    font-weight: bold;
+    font-size: 2.2rem;
+  }
+  
+  .subtitle {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #5a3e1b;
+  }
+  
+  .auth-form .form-label {
+    font-weight: bold;
+    color: #8b4513;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #e0a800, #ffcc33);
+    border: none;
+  }
+  
+  .switch-text {
+    margin-top: 1rem;
+    text-align: center;
+    color: #5a3e1b;
+  }
+  
+  .switch-text span {
+    color: #8b0000;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .switch-text span:hover {
+    text-decoration: underline;
+  }
+  
