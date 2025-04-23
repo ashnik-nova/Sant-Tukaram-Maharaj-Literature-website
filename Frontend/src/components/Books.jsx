@@ -179,7 +179,7 @@ const Books = () => {
     <div>
       <CustomNavbar />
       <Container className="books-page">
-        <h1 className="text-center mb-4">📚 Book Store</h1>
+        <h1 className="text-center mb-4 ">📚 Book Store</h1>
         <Row>
           {books.map((book) => (
             <Col md={6} lg={4} key={book.id} className="mb-4">

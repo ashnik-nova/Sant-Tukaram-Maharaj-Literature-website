@@ -1,4 +1,4 @@
-export const LifeStory = [
+ const LifeStory = [
     {
         id: 1,
         title: `The Story of Tuka and Jija’s Lakshmi Pooja`,
@@ -574,3 +574,5 @@ export const LifeStory = [
         Hare Rama, Hare Rama, Rama Rama, Hare Hare.`
     },
 ];
+
+export default LifeStory; 

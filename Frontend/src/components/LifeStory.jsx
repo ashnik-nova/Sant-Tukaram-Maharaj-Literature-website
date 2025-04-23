@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { lifeStory } from "../Data/LifeStory";
+import  lifeStory  from "../Data/LifeStory.js";
 import CustomNavbar from "./Navbar.jsx";
 
 function LifeStory() {

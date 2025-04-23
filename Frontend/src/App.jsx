@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import AbhangasPage from "./components/AbhangasPage";
+import LifeStory from "./components/LifeStory";
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
 import Philosophy from "./components/Philosophy";
+import CustomNavbar from "./components/Navbar";
 import Gallery from "./components/Gallery";
 import Books from "./components/Books";
 import AdminDashboard from "./components/AdminDashboard/DashboardHome";
@@ -17,6 +19,7 @@ const App = () => {
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/abhangs" element={<AbhangasPage />} />
+        <Route path="/lifestory" element={<LifeStory />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />  
         <Route path="/philosophy" element={<Philosophy />} />
