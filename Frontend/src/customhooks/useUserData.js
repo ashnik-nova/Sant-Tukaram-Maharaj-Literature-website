@@ -3,13 +3,11 @@ import Cookies from "js-cookie";
 
 const useUserData = () => {
     const [user, setUser] = useState(null);
-    const [userType, setUserType] = useState("user");  // Using userType instead of role
-
+    const [userType, setUserType] = useState("user"); 
     useEffect(() => {
-        const storedUser = Cookies.get("user");
+        const storedUser = Cookies.get("user"); 
         if (storedUser) {
             try {
-                // Try parsing the user object from cookies
                 setUser(JSON.parse(storedUser)); 
             } catch (error) {
                 console.error("Invalid user data in cookies:", error);
@@ -19,8 +17,8 @@ const useUserData = () => {
             }
         }
 
-        // Check and set the userType from cookies, default to 'user' if not found
-        const storedUserType = Cookies.get("userType");  // Looking for userType instead of role
+        
+        const storedUserType = Cookies.get("userType"); 
         if (storedUserType) {
             setUserType(storedUserType);
         } else {
@@ -51,7 +49,6 @@ const useUserData = () => {
             Cookies.set("userType", type, { expires: 7, secure: true, sameSite: "Strict" });
         }
     };
-
     return { user, userType, updateUser, updateUserType };
 };
 

@@ -53,7 +53,7 @@ const Philosophy = () => {
   return (
     <div className="philosophy-page">
       {/* Navbar */}
-      <Navbar />
+      
 
       {/* Hero Section */}
       <section className="hero-section">

@@ -3,7 +3,8 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import UserRoutes from './routes/user.routes.js'
 import AdminRoutes from './routes/admin.routes.js'
-import { ApiError } from './utils/ApiError.js';  
+import { ApiError } from './utils/ApiError.js'; 
+import abhangaRoutes from './routes/abhanga.routes.js' 
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', UserRoutes);
 app.use('/api/admins', AdminRoutes);
+app.use('/api/abhangas', abhangaRoutes);
 
 app.use((err, req, res, next) => {
    

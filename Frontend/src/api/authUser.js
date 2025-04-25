@@ -26,10 +26,10 @@ const signupUser = async (userData, endpoint) => {
 };
 
 const logoutUser = async (role) => {
-const user = ( role === "user" ? "users" : ( role === "serviceprovider" ) ? "providers" : "admins" );
+const user = ( role === "user" ? "user" : "admin" );
 
   try {
-    const response = await axiosInstance.post(`${user}/logout`, {});
+    const response = await axiosInstance.post(`${user}s/logout-${user}`, {});
     return response.data;
   } catch (error) {
     console.log(error);

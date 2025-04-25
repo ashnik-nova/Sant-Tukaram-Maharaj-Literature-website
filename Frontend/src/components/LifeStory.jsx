@@ -53,7 +53,6 @@ function LifeStory() {
 
   return (
     <div className="bg-light min-vh-100">
-      <CustomNavbar />
 
       {/* Header */}
       <div className="container py-5 text-center">

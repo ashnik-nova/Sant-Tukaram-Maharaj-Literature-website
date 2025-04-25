@@ -25,7 +25,6 @@ const Gallery = () => {
   return (
     <div className="gallery-page">
       {/* Navbar */}
-      <Navbar />
 
       {/* Hero Section */}
       <div className="hero-section">

@@ -96,12 +96,14 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
 
     const refreshTokenExpiry = 7 * 24 * 60 * 60;
-    const accessTokenExpiry = 15 * 60;
+    const accessTokenExpiry = 60 * 60;
 
     const options = {
         httpOnly: true,
         secure: false
     };
+
+    
 
     res.cookie("accessToken", accessToken, {
         ...options,
@@ -114,6 +116,12 @@ const loginUser = asyncHandler(async (req, res, next) => {
     });
 
     res.cookie("role", role, {
+        ...options,
+        httpOnly: false,
+        expires: new Date(Date.now() + refreshTokenExpiry * 1000)
+    });
+
+    res.cookie("user", JSON.stringify(LoggedinUser), {
         ...options,
         httpOnly: false,
         expires: new Date(Date.now() + refreshTokenExpiry * 1000)

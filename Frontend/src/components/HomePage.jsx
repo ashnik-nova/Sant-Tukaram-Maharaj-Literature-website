@@ -250,7 +250,7 @@ const HomePage = () => {
   return (
     <div>
       {/* Imported Navbar */}
-      <CustomNavbar />
+
 
       {/* Info Section */}
       <section className="info-section scroll-reveal">

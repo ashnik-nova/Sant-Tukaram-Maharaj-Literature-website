@@ -100,7 +100,7 @@ const loginAdmin = asyncHandler(async (req, res, next) => {
 
 
     const refreshTokenExpiry = 7 * 24 * 60 * 60;
-    const accessTokenExpiry = 15 * 60;
+    const accessTokenExpiry = 60 * 60;
 
     const options = {
         httpOnly: true,
