@@ -1,97 +1,116 @@
 import React, { useState } from "react";
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
-import { BsPlusLg, BsSend } from "react-icons/bs";
+import { Button, Form, Spinner, Card, Container } from "react-bootstrap";
+import { submitAbhanga } from "../api/abhanga.api"; 
+import { useToast } from "../context/Toast/ToastContext"; // Adjust path if needed
 
-export default function AddAbhangaSection({ newAbhanga, setNewAbhanga, setAbhangas, abhangas }) {
-  const [abhangaText, setAbhangaText] = useState("");
-  const [language, setLanguage] = useState("marathi");
-  
-  const handleAddAbhanga = (e) => {
-    e.preventDefault();
-    if (newAbhanga.trim()) {
-      setAbhangas([...abhangas, { id: Date.now(), title: newAbhanga, liked: false }]);
-      setNewAbhanga("");
+const AddAbhangaSection = () => {
+  const [newAbhanga, setNewAbhanga] = useState({
+    title: "",
+    content: "",
+    category: "",
+  });
+  const [abhangas, setAbhangas] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { success, error } = useToast(); 
+
+  // Handle submit of the new Abhanga (for review)
+  const handleSubmitForReview = async () => {
+    if (!newAbhanga.title.trim() || !newAbhanga.content.trim() || !newAbhanga.category.trim()) {
+      alert("All fields (Title, Content, Category) are required!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload = {
+        title: newAbhanga.title,
+        content: newAbhanga.content,
+        category: newAbhanga.category
+      };
+
+      const response = await submitAbhanga(payload); // Assuming this function returns saved data
+      setAbhangas((prev) => [...prev, response]);
+      setNewAbhanga({ title: "", content: "", category: "" });
+      success("Abhanga submitted for review!");
+    } catch (error) {
+      console.error("Submit Error:", error);
+      alert(error.message || "Failed to submit abhanga.");
+    } finally {
+      setLoading(false);
     }
   };
-  
-  const handleSubmitToAdmin = (e) => {
-    e.preventDefault();
-    if (newAbhanga.trim() && abhangaText.trim()) {
-      // Here you would typically make an API call to send this to admin
-      alert(`Abhanga "${newAbhanga}" in ${language} has been sent to admin for review`);
-      setNewAbhanga("");
-      setAbhangaText("");
-    }
-  };
+
+
 
   return (
-    <Card border="success" className="bg-success-subtle">
-      <Card.Header className="bg-success text-white">📜 Request to Add Abhanga</Card.Header>
-      <Card.Body>
-        <Form onSubmit={handleSubmitToAdmin}>
-          <Row className="mb-3">
-            <Col>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold">Abhanga Title</Form.Label>
-                <Form.Control
-                  placeholder="Enter Abhanga Title"
-                  value={newAbhanga}
-                  onChange={(e) => setNewAbhanga(e.target.value)}
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          
-          <Row className="mb-3">
-            <Col>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold">Abhanga Text</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  placeholder="Paste the Abhanga text here"
-                  value={abhangaText}
-                  onChange={(e) => setAbhangaText(e.target.value)}
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          
-          <Row className="mb-3">
-            <Col>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold">Select Language</Form.Label>
-                <Form.Select 
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
-                  <option value="marathi">Marathi</option>
-                  <option value="hindi">Hindi</option>
-                  <option value="sanskrit">Sanskrit</option>
-                  <option value="english">English</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-          
-          <div className="d-flex gap-2">
-            <Button type="submit" variant="success">
-              <BsSend className="me-1" />
-              Send to Admin
-            </Button>
-            <Button 
-              type="button" 
-              variant="warning" 
-              onClick={handleAddAbhanga}
-            >
-              <BsPlusLg className="me-1" />
-              Add to My List
-            </Button>
-          </div>
-        </Form>
-      </Card.Body>
-    </Card>
+    <Container className="my-5" fluid>
+      <Card className="shadow-lg rounded p-4">
+        <Card.Body>
+          <h3 className="text-center mb-4 text-primary">Add New Abhanga</h3>
+          <Form>
+            <Form.Group controlId="title" className="mb-3">
+              <Form.Label className="fw-bold">Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Title"
+                value={newAbhanga.title}
+                onChange={(e) =>
+                  setNewAbhanga({ ...newAbhanga, title: e.target.value })
+                }
+                className="form-control-lg"
+                style={{ borderRadius: "10px" }}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="content" className="mb-3">
+              <Form.Label className="fw-bold">Content</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={5}
+                placeholder="Enter Abhanga Content"
+                value={newAbhanga.content}
+                onChange={(e) =>
+                  setNewAbhanga({ ...newAbhanga, content: e.target.value })
+                }
+                className="form-control-lg"
+                style={{ borderRadius: "10px" }}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="category" className="mb-4">
+              <Form.Label className="fw-bold">Category</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Category (e.g., Devotion)"
+                value={newAbhanga.category}
+                onChange={(e) =>
+                  setNewAbhanga({ ...newAbhanga, category: e.target.value })
+                }
+                className="form-control-lg"
+                style={{ borderRadius: "10px" }}
+              />
+            </Form.Group>
+
+            <div className="d-flex justify-content-center">
+              {/* Submit for Review Button */}
+              <Button
+                variant="warning"
+                onClick={handleSubmitForReview}
+                disabled={loading}
+                className="px-5 py-2 fs-5 me-3"
+                style={{ borderRadius: "30px", width: "auto" }}
+              >
+                {loading ? <Spinner animation="border" size="sm" /> : "Submit for Review"}
+              </Button>
+
+              {/* Add to List Button */}
+              
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
-}
+};
+
+export default AddAbhangaSection;

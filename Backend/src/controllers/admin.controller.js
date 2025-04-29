@@ -11,6 +11,7 @@ import fs from 'fs'
 import path from "path";
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
+import { User } from "../models/user.model.js";
 
 const generateRefreshTokenAccessToken = async (adminid) => {
     try {
@@ -100,7 +101,7 @@ const loginAdmin = asyncHandler(async (req, res, next) => {
 
 
     const refreshTokenExpiry = 7 * 24 * 60 * 60;
-    const accessTokenExpiry = 60 * 60;
+    const accessTokenExpiry = 1 * 24 * 60 * 60;
 
     const options = {
         httpOnly: true,
@@ -338,6 +339,12 @@ const resetPassword = asyncHandler(async (req, res) => {
     }
 })
 
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({}).select("-password -refreshToken")
+    console.log("Users:" ,users);
+    return res.status(200).json(
+        new ApiResponse(200, users, "All Users fetched successfully")
+    )
+})
 
-
-export { registerAdmin, loginAdmin, logoutAdmin, refreshAccessToken, ForgetPassword, verify_otp, resetPassword }
+export { registerAdmin, loginAdmin, logoutAdmin, refreshAccessToken, ForgetPassword, verify_otp, resetPassword, getAllUsers }

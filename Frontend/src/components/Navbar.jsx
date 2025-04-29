@@ -10,34 +10,54 @@ import { useToast } from "../context/Toast/ToastContext.js";
 const CustomNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, userType, updateUserType } = useContext(UserContext);
-  const { success, error } = useToast(); // Assuming you have a toast context for notifications
+  const { user, userType, updateUserType, updateUser } = useContext(UserContext);
+  const { success, error } = useToast();
   const isActive = (path) => location.pathname === path;
 
-  // Sync context with cookies on app load (using useEffect)
   useEffect(() => {
+    // Only update context if values are different to prevent infinite loops
     const userCookie = Cookies.get("user");
     const userTypeCookie = Cookies.get("userType");
 
-    if (userCookie && userTypeCookie) {
-      updateUserType(userTypeCookie); // Set the user type from cookies
-    } else {
-      updateUserType(null); // If no cookies, ensure user type is null
+    // Only run this effect if there's no user in context but there are cookies
+    // OR if there's a user in context but no cookies (inconsistent state)
+    const shouldUpdateFromCookies = (!user && userCookie) || 
+                                   (user && !userCookie);
+    
+    if (shouldUpdateFromCookies && userCookie && userTypeCookie) {
+      try {
+        const userObj = JSON.parse(userCookie);
+        // Only update if values actually changed
+        if (JSON.stringify(user) !== JSON.stringify(userObj)) {
+          updateUser(userObj);
+        }
+        if (userType !== userTypeCookie) {
+          updateUserType(userTypeCookie);
+        }
+      } catch (e) {
+        console.error("Error parsing user cookie:", e);
+      }
     }
-  }, [updateUserType]);
+  }, [user, userType, updateUser, updateUserType]);
 
   // Handle logout
   const handleLogout = async () => {
     try {
       const response = await logoutUser(userType);
       console.log(response);
-      success("Logout Successful!");
+      
+      // Clear cookies
       Cookies.remove("user");
       Cookies.remove("userType");
-      updateUserType(null); // Clear context state
-      navigate("/"); // Navigate to home page
-    } catch (error) {
-      error(error.message || "Logout failed!");
+      
+      // Update context state
+      updateUser(null);
+      updateUserType(null);
+      
+      success("Logout Successful!");
+      navigate("/");
+    } catch (err) {
+      error(err.message || "Logout failed!");
     }
   };
 
@@ -67,8 +87,8 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/gallery" className={isActive("/gallery") ? "active-link" : ""}>
               Gallery
             </Nav.Link>
-            <Nav.Link as={Link} to="/contact" className={isActive("/contact") ? "active-link" : ""}>
-              Contact
+            <Nav.Link as={Link} to="/bhajans" className={isActive("/bhajans") ? "active-link" : ""}>
+              Bhajans
             </Nav.Link>
 
             {!user ? (
@@ -81,7 +101,7 @@ const CustomNavbar = () => {
                 </Nav.Link>
               </>
             ) : (
-              <NavDropdown title={user.name || "User"} id="user-nav-dropdown" align="end">
+              <NavDropdown title={user?.name || "User"} id="user-nav-dropdown" align="end">
                 <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/dashboard">Dashboard</NavDropdown.Item>
                 <NavDropdown.Divider />

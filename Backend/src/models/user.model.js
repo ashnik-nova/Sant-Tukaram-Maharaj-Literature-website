@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        phoneNo: {
+            type: String,
+            match: [/^\d{10}$/, 'Please enter a valid 10-digit phone number'],
+        },
+
         refreshToken: {
             type: String,
             default: null,
@@ -28,7 +33,7 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Pre-save middleware
+
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);

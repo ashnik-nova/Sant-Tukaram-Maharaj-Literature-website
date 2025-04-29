@@ -1,5 +1,12 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider, Route, Outlet } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+
+import { Outlet } from "react-router-dom";
+
 import HomePage from "./components/HomePage";
 import AbhangasPage from "./components/AbhangasPage";
 import LifeStory from "./components/LifeStory";
@@ -9,9 +16,14 @@ import Philosophy from "./components/Philosophy";
 import CustomNavbar from "./components/Navbar";
 import Gallery from "./components/Gallery";
 import Books from "./components/Books";
-import AdminDashboard from "./components/AdminDashboard/DashboardHome"; // wrapper
-import Dashboard from "./components/AdminDashboard/Dashboard"; // actual dashboard
 import UserDashboard from "./components/UserDashboard";
+
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard"; // Layout with sidebar
+import Dashboard from "./components/AdminDashboard/Dashboard";
+import ManageBhanjans from "./components/AdminDashboard/ManageBhanjans"; // Manage Bhanjans
+import ManageBooks from "./components/AdminDashboard/ManageBooks";
+import ManageAbhangas from "./components/AdminDashboard/ManageAbhangas"; // Manage Abhangas
+import BhajansPage from "./components/BhajansPage"; // Bhajan Page
 
 // Layout with Navbar
 const MainLayout = () => {
@@ -25,19 +37,6 @@ const MainLayout = () => {
   );
 };
 
-// Admin layout with Navbar
-const AdminLayout = () => {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <CustomNavbar />
-      <main className="flex-grow pt-20">
-        <Outlet />
-      </main>
-    </div>
-  );
-};
-
-// Define routes using createBrowserRouter
 const router = createBrowserRouter([
   {
     path: "/",
@@ -50,18 +49,20 @@ const router = createBrowserRouter([
       { path: "gallery", element: <Gallery /> },
       { path: "books", element: <Books /> },
       { path: "dashboard", element: <UserDashboard /> },
+      { path: "bhajans", element: <BhajansPage/> },
     ],
   },
   { path: "/signup", element: <SignupPage /> },
   { path: "/login", element: <LoginPage /> },
+
   {
     path: "/admin",
-    element: <AdminDashboard/>,
+    element: <AdminDashboard />,
     children: [
-      {
-        path: "dashboard",  // Use relative path here
-        element: <Dashboard />,
-      },
+      { index: true, element: <Navigate to="dashboard" replace /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "abhangas", element: <ManageAbhangas /> }, 
+      { path: "bhanjans", element: <ManageBhanjans /> }, 
     ],
   },
 ]);

@@ -1,0 +1,25 @@
+/* You can put this in a separate CSS file and import it, or add to your global CSS */
+.bhajans-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bhajans-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.bhajans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Add media query for responsive design */
+@media (max-width: 768px) {
+  .bhajans-grid {
+    grid-template-columns: 1fr;
+  }
+}

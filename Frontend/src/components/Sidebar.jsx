@@ -27,6 +27,17 @@ export default function Sidebar({ active, setActive }) {
           <span>Add Abhanga</span>
         </Nav.Link>
 
+
+
+        <Nav.Link
+          onClick={() => setActive("addBhajan")}
+          active={active === "addBhajan"}
+          className={`d-flex align-items-center gap-2 py-2 px-3 rounded ${active === "addBhajan" ? "bg-primary text-white" : "text-dark"}`}
+          style={{ cursor: "pointer", transition: "all 0.3s ease" }}
+        >
+          <FaPlusCircle size={20} />
+          <span>Add Bhanjan</span>
+        </Nav.Link>
         <Nav.Link
           onClick={() => setActive("list")}
           active={active === "list"}
@@ -35,6 +46,15 @@ export default function Sidebar({ active, setActive }) {
         >
           <FaListUl size={20} />
           <span>Abhanga List</span>
+        </Nav.Link>
+        <Nav.Link
+          onClick={() => setActive("Bhajanlist")}
+          active={active === "Bhajanlist"}
+          className={`d-flex align-items-center gap-2 py-2 px-3 rounded ${active === "Bhajanlist" ? "bg-primary text-white" : "text-dark"}`}
+          style={{ cursor: "pointer", transition: "all 0.3s ease" }}
+        >
+          <FaListUl size={20} />
+          <span>Bhanjan's List</span>
         </Nav.Link>
       </Nav>
     </div>

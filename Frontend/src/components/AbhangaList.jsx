@@ -1,45 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   ListGroup,
-  Button,
   Badge,
-  OverlayTrigger,
-  Tooltip,
+  Spinner,
+  Alert,
 } from "react-bootstrap";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { getUserAbhangas } from "../api/abhanga.api.js"; // update your import path if needed
 
-// Subcomponent for individual Abhanga entry
-const AbhangaItem = ({ abhanga, handleLike, renderTooltip }) => {
-  const { id, title, liked } = abhanga;
+export default function AbhangaList() {
+  const [abhangas, setAbhangas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  return (
-    <ListGroup.Item
-      key={id}
-      className="d-flex justify-content-between align-items-center py-3"
-    >
-      <div className="fw-semibold text-truncate me-3" style={{ maxWidth: "70%" }}>
-        {title}
+  useEffect(() => {
+    const fetchAbhangas = async () => {
+      try {
+        const response = await getUserAbhangas();
+        setAbhangas(response.data);
+        console.log("Fetched Abhangas:", response.data);
+      } catch (err) {
+        console.error("Failed to fetch user Abhangas:", err);
+        setError(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAbhangas();
+  }, []);
+
+  const getBadgeVariant = (status) => {
+    switch (status?.toLowerCase()) {
+      case "approved":
+        return "success";    // Green
+      case "pending":
+        return "warning";    // Yellow
+      case "rejected":
+        return "danger";     // Red
+      default:
+        return "secondary";  // Default Gray
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center py-5">
+        <Spinner animation="border" variant="warning" />
       </div>
-      <OverlayTrigger placement="top" overlay={renderTooltip(liked ? "Unlike" : "Like")}>
-        <Button
-          variant={liked ? "danger" : "outline-secondary"}
-          size="sm"
-          onClick={() => handleLike(id)}
-          aria-label={liked ? "Unlike this Abhanga" : "Like this Abhanga"}
-        >
-          {liked ? <BsHeartFill /> : <BsHeart />}
-          <Badge bg={liked ? "danger" : "secondary"} className="ms-2">
-            {liked ? "Liked" : "Like"}
-          </Badge>
-        </Button>
-      </OverlayTrigger>
-    </ListGroup.Item>
-  );
-};
+    );
+  }
 
-export default function AbhangaList({ abhangas, handleLike }) {
-  const renderTooltip = (text) => <Tooltip id="like-tooltip">{text}</Tooltip>;
+  if (error) {
+    return (
+      <Alert variant="danger" className="text-center">
+        {error}
+      </Alert>
+    );
+  }
 
   return (
     <Card className="shadow-sm border-0">
@@ -48,18 +66,26 @@ export default function AbhangaList({ abhangas, handleLike }) {
       </Card.Header>
       <Card.Body className="bg-light">
         {abhangas.length === 0 ? (
-          <div className="alert alert-info text-center mb-0">
+          <Alert variant="info" className="text-center mb-0">
             No Abhangas requested yet.
-          </div>
+          </Alert>
         ) : (
           <ListGroup variant="flush">
             {abhangas.map((a) => (
-              <AbhangaItem
-                key={a.id}
-                abhanga={a}
-                handleLike={handleLike}
-                renderTooltip={renderTooltip}
-              />
+              <ListGroup.Item
+                key={a._id}
+                className="d-flex justify-content-between align-items-center py-3"
+              >
+                <div className="fw-semibold text-truncate me-3" style={{ maxWidth: "70%" }}>
+                  {a.title}
+                </div>
+                <Badge
+                  bg={getBadgeVariant(a.status)}
+                  className="px-3 py-2 text-uppercase"
+                >
+                  {a.status || "Pending"}
+                </Badge>
+              </ListGroup.Item>
             ))}
           </ListGroup>
         )}

@@ -4,7 +4,8 @@ import {
   submitAbhanga,
   getPendingAbhangas,
   updateAbhangaStatus,
-  getApprovedAbhangas
+  getApprovedAbhangas,
+  getuserAbhangas
 } from '../controllers/abhanga.controller.js';
 import { authUser } from '../middlewares/auth.user.middleware.js';
 import { authAdmin } from '../middlewares/auth.admin.middleware.js';
@@ -21,11 +22,9 @@ router.post(
   ],
   submitAbhanga
 );
-
-// 🔍 Admin fetches all pending Abhangas
 router.get('/pending', authAdmin, getPendingAbhangas);
 
-// ✅ Admin reviews Abhanga (approve or reject)
+
 router.put(
   '/review/:id',
   authAdmin,
@@ -39,5 +38,7 @@ router.put(
 
 // 🌍 Public route: Get all approved Abhangas
 router.get('/all-approved', getApprovedAbhangas);
+
+router.get('/getuserabhanga', authUser, getuserAbhangas);
 
 export default router;

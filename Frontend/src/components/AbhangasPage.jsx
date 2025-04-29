@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomNavbar from "./Navbar";
 import {
   Container,
@@ -6,155 +6,165 @@ import {
   Col,
   Card,
   Button,
-  Navbar,
-  Nav,
   Form,
+  Spinner,
+  Badge,
+  Alert
 } from "react-bootstrap";
 import "./AbhangasPage.css";
+import { getApprovedAbhangas } from "../api/abhanga.api.js";
 
 const AbhangasPage = () => {
-  // Abhangas Data
-  const [abhangas] = useState([
-    {
-    id: 1,
-      marathi: "जाणता अजाणता हरिपाठ करा । मग तो सांगे पंथा संताचा ॥",
-      meaning:
-        "Whether knowingly or unknowingly, chant the name of Hari (God), and he will guide you on the path of saints.",
-      theme: "Devotion",
-      audio: "/जाणता अजाणता हरिपाठ(1).mp3",
-    },
-    {
-      id: 2,
-      marathi: "तिन्ही लोक आनंदाने भरुनि आले । हरी विठ्ठल नाम घेता ॥",
-      meaning:
-        "Chanting the name of Hari Vitthal fills all three worlds with joy.",
-      theme: "Faith",
-      audio: "/तिन्ही लोक आनंदाने भ(2).mp3",
-    },
-    {
-      id: 3,
-      marathi: "आनंदाचे डोही आनंद तरंग । जय जय राम कृष्ण हरी ॥",
-      meaning:
-        "In the ocean of bliss, waves of joy arise – Victory to Ram, Krishna, and Hari!",
-      theme: "Devotion",
-      audio: "/आनंदाचे डोही आनंद तर(3).mp3",
-    },
-    {
-        id: 4,
-        marathi: "आम्ही वैकुंठवासी । आलो या चि कारणासी । बोलिले जे ॠषी । साच भावे वर्तावया ॥१॥ झाडू संतांचे मारग । आडराने भरले जग ।उच्छिष्टाचा भाग । शेष उरले ते सेवू ॥धृ॥",
-        meaning:
-            "We are the inhabitants of Vaikuntha. We have come for this reason. The sages have spoken. Let us behave with true feelings. ||1||The path of the saints is full of fear. The world is filled withfear. The portion of the chosen one. We will serve the rest.",
-        theme: "Devotion",
-        audio: "/आम्ही वैकुंठवासी आलो(4).mp3",
-    },
-    {
-        id: 5,
-        marathi: "आम्ही हरिचे सवंगडे । जुने ठायीचे वेडे बागडे ।हाती धरुनी कडे । पाठीसवे वागविलो ॥१॥ म्हणोनि भिन्न भेद नाही । देवा आम्हा एकदेही । नाही जालो काही । एका एक वेगळे ॥धृ॥",
-        meaning: "We are all the brothers of Hari. The old, crazy,old-fashioned ones. Holding hands. We behaved backwards. 1. Saying , there is no difference.O God, we are one body. We do not go anywhere . Weare all different . ",
-        theme: "Devotion",
-        audio: "/आम्ही हरिचे सवंगडे ज(5).mp3",
-    },
-    {
-        id: 6,
-        marathi: "मागे बहुता जन्मी । हे चि करित आलो आम्ही । भवतापश्रमी । दुःखे पीडिली निववू त्या ॥१॥ गर्जो हरिचे पवाडे । मिळो वैष्णव बागडे ।पाझर रोकडे । काढू पाषाणामध्ये ॥धृ॥ भाव शुध्द नामावळी । हर्षे नाचो पिटू टाळी ।घालू पाया तळी । कळिकाळ त्याबळे ॥२॥ गर्जो हरिचे पवाडे । मिळो वैष्णव बागडे ।पाझर रोकडे । काढू पाषाणामध्ये ॥धृ॥ कामक्रोध बंदखाणी । तुका म्हणे दिले दोन्ही । इंद्रियांचे धनी । आम्ही जालो गोसावी ॥३॥ गर्जो हरिचे पवाडे । मिळो वैष्णव बागडे । पाझर रोकडे । काढू पाषाणामध्ये ॥धृ॥",
-        meaning: "Many births ago. We have come to do this. Weare the workers of the world. We will relieve the suffering of those who are suffering. 1.The sound of the trumpet of Hari. Let us find the Vaishnava bagade. Let us find the money. Let us extract it from the stone. The pure name of the soul. I will dance with joy and beat my hands. Let us lay the foundation. The key is in the heart. 2.The sound of the trumpet of Hari. Let us find the Vaishnava bagade. Let us find the money. Let usextract it from the stone. The prison of lust and anger. You have given me both. The lord of the senses. We have gone to Gosavi. 3. The sound of the trumpet of Hari. Let us find the Vaishnava bagade. Let us find the money. Let us extract it from the stone.",
-        theme: "Faith",
-        audio: "/generated-audio(6).mp3",
-    },
-    {
-        id: 7,
-        marathi: "ब्रम्हज्ञान जरी एके दिवसी कळे । तात्काळ हा गळे अभिमान ॥१॥अभिमान लागे शुकाचिये पाठी । व्यासे उपराटी दृष्टी केली ॥२॥ जनक भेटीसी पाठविला तेणे । अभिमान नाणे खोटे केले ॥३॥ खोटे करूनिया लाविला अभ्यासी । मेरु शिखरासी शुक गेला ॥४॥ जाऊनिया तेणे साधिली समाधी । तुका म्हणे तधी होतो आम्ही ॥५॥",
-        meaning: "Even if the knowledge of Brahman is known one day, immediately this pride is swallowed up. 1.Pride is like a dry leaf. Vyasa has seen the other side. 2.He sent him to visit Janaka. Pride has made the coin false. 3.He has made it false and has made it a student. He has dried up on the peak of Meru. 4. He has gone to Jauniya and has attained Samadhi. We are ready to say this. 5.",
-        theme: "Faith",
-        audio: "/generated-audio(7).mp3",
-    },
-    {
-        id: 8,
-        marathi: "कोटी जन्म पुण्य साधन साधिले । तेणे हाता आले हरिदास्य ॥१॥ रात्रीं दिवस ध्यान हरीचे भजन । काया वाचा मन भगवंती ॥ध्रु॥ ऐसिया प्रेमळा म्हणताती वेडा । संसार रोकडा बुडविला ॥२॥ रात्रीं दिवस ध्यान हरीचे भजन । काया वाचा मन भगवंती ॥ध्रु॥ एकवीस कुळे जेणे उद्धरिली । हे तो न कळे खोली भाग्यमंदा ॥३॥ रात्रीं दिवस ध्यान हरीचे भजन । काया वाचा मन भगवंती ॥ध्रु॥ तुका म्हणे त्याची पायधुळी मिळे । भवभय पळे वंदिताची ॥४॥ रात्रीं दिवस ध्यान हरीचे भजन । काया वाचा मन भगवंती ॥ध्रु॥",
-        meaning: "Attainment of crores of births and virtues. Then came Haridasya ॥1॥ Day and night meditation Hari Bhajan. What do you read mind Bhagwanti ॥ Dhru॥ Aisiya Premla is called crazy. The world has sunk in cash ॥2॥ Day and night meditation Hari Bhajan. What do you read mind Bhagwanti ॥ Dhru॥ Twenty-one clans were rescued. If he does not know this, the room is unlucky. ॥3॥ Day and night meditation Hari Bhajan. What do you read mind Bhagwanti ॥ Dhru॥ You say, get his footing. Bhavbhaya ran Vandita's ॥4॥ Day and night meditation Hari Bhajan. What do you read mind Bhagwanti ॥ Dhru॥",
-        theme: "Devotion",
-        audio: "/generated-audio(8).mp3",
-    },
-    {
-        id: 9,
-        marathi: "फिराविली दोन्ही । कन्या आणि चक्रपाणी ॥१॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ तुटली बंधने । वसुदेव देवकीची दर्शने ॥२॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ गोकुळासी आले । ब्रम्ह अव्यक्त चांगले ॥३॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ नंद दसवंती । धन्य देखिले श्रीपती ॥४॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ निशी जन्मकाळ । आले अष्टमी गोपाळ ॥५॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ आनंदली मही । भार गेला सकळ ही ॥६॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥ तुका म्हणे कंसा । आट भोविला वळसा ॥७॥ जाला आनंदे आनंद । अवतरले गोविंद ॥धृ॥",
-        meaning: "1. Rotated both. Kanya and Chakrapani ॥1॥ Go happy happy. Incarnate Govinda. Broken bonds. Darshan of Vasudeva Devaki ॥2॥ Go happy happy. Incarnate Govinda. Gokulasi came. Brahma is unmanifest good. ॥3॥ Go happy happy. Incarnate Govinda. Nanda Daswanti. Blessed see Shripati ॥4॥ Go happy happy. Incarnate Govinda. Nishi birth period. Ale Ashtami Gopal ॥5॥ Go happy happy. Incarnate Govinda. Anandali Mahi. The burden is gone. Go happy happy. Incarnate Govinda. You say parentheses. Go round and round 7. Go happy happy. Incarnate Govinda.",
-        theme: "Devotion",
-        audio: "/Audio9.wav",
-    },
-    {
-        id: 10,
-        marathi: "करूनि आरती । आता ओवाळू श्रीपती ॥१॥ आजि पुरले नवस । धन्य जाला हा दिवस ॥धृ॥ पाहा वो सकळा । पुण्यवंता तुम्ही बाळा ॥२॥ आजि पुरले नवस । धन्य जाला हा दिवस ॥धृ॥ तुका वाहे टाळी । होता सन्निध जवळी ॥३॥ आजि पुरले नवस । धन्य जाला हा दिवस ॥धृ॥",
-        meaning: "Karani Aarti. Now wave Shripati ॥1॥ Aji buried vows. May this day be blessed. Look, it's gross. You are a virtuous child. Aji buried vows. May this day be blessed. Clap your hands. There was proximity. 3. Aji buried vows. May this day be blessed.",
-        theme: "Faith",
-        audio: "/Audio10.wav",
-    },
-    {
-        id: 11,
-        marathi: "मुख डोळा पाहे । तैशीच ते उभी राहे ॥१॥ केल्याविण नव्हे हाती। धरोनि आरती परती ॥धृ॥ न धरिती मनी। काही संकोच दाटणी ॥२॥ केल्याविण नव्हे हाती। धरोनि आरती परती ॥धृ॥ तुका म्हणे देवे । ओस केल्या देहभावे ॥३॥ केल्याविण नव्हे हाती। धरोनि आरती परती ॥धृ॥",
-        meaning: "The face sees the eye. That is how it stands. ॥1॥ Not done by the hand. Hold the aarti back. ॥॥ Not held by the mind. Some hesitation is not done by the hand. Hold the aarti back. ॥॥ You say to God. The body is exhausted. ॥3॥ Not done by the hand. Hold the aarti back.",
-        theme: "Faith",
-        audio: "/Audio11.wav",
-    },
-    {
-        id: 12,
-        marathi: "विटंबिले भट । दिला पाठीवरी पाट ॥१॥खोटे जाणोनि अंतर । न साहे चि विश्वंभर ॥धृ॥ ते चि करी दान । जैसे आइके वचन ॥२॥ खोटे जाणोनि अंतर । न साहे चि विश्वंभर ॥धृ॥ तुका म्हणे देवे । पूतना शोषियेली जीवे ॥३॥ खोटे जाणोनि अंतर । न साहे चि विश्वंभर ॥धृ॥",
-        meaning: "Vitambile Bhat. He gave a pat on the back. 1. He knows the difference between the truth and the truth. He does not accept the world. He does not accept the truth. He does not accept the world. He does not accept the truth. He says to you. He who devours the soul of the soul. 3. He knows the difference between the truth and the truth. He does not accept the world. He does not accept the truth.",
-        theme: "Devotion",
-        audio: "/Audio12.wav",
-    },
-  ]);
-
-  // State for Search, Filter & Expanded View
+  const [abhangas, setAbhangas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTheme, setSelectedTheme] = useState("All");
   const [expandedAbhanga, setExpandedAbhanga] = useState(null);
 
-  // Filtered Abhangas (Based on Search & Theme)
+  // Translation states
+  const [translatedContent, setTranslatedContent] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translationError, setTranslationError] = useState(null);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [translationDirection, setTranslationDirection] = useState("mr-en");
+
+  // TTS states
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [ttsError, setTtsError] = useState(null);
+
+  // Check if ResponsiveVoice is loaded
+  useEffect(() => {
+    if (!window.ResponsiveVoice) {
+      console.warn("ResponsiveVoice is not loaded. TTS functionality will be limited.");
+      setTtsError("Text-to-speech service is not available. Please make sure the ResponsiveVoice library is loaded.");
+    }
+  }, []);
+
+  // Fetch Abhangas
+  useEffect(() => {
+    const fetchAbhangas = async () => {
+      try {
+        setLoading(true);
+        const response = await getApprovedAbhangas();
+        console.log("Fetched Abhangas:", response.data);
+        setAbhangas(response.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error loading Abhangas:", err);
+        setError("Failed to load Abhangas. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAbhangas();
+  }, []);
+
+  // Get unique categories for filtering
+  const uniqueCategories = [...new Set(
+    abhangas.map(abhang => abhang.category?.charAt(0).toUpperCase() + abhang.category?.slice(1).trim())
+  )].filter(Boolean);
+
   const filteredAbhangas = abhangas.filter((abhang) => {
-    const matchesSearch = abhang.marathi.includes(searchTerm);
-    const matchesTheme =
-      selectedTheme === "All" || abhang.theme === selectedTheme;
+    const matchesSearch = abhang.content?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          abhang.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesTheme = selectedTheme === "All" || 
+                         abhang.category?.toLowerCase() === selectedTheme.toLowerCase();
     return matchesSearch && matchesTheme;
   });
 
-  // Handle "Read More" Click
   const handleReadMore = (abhang) => {
     setExpandedAbhanga(abhang);
+    setShowTranslation(false);
+    setTranslatedContent("");
+    setTranslationError(null);
+    setTtsError(null);
+    
+    // Stop any ongoing speech when changing abhanga
+    if (window.ResponsiveVoice && window.ResponsiveVoice.isPlaying()) {
+      window.ResponsiveVoice.cancel();
+      setIsSpeaking(false);
+    }
   };
 
-  // Close Expanded View
   const handleClose = () => {
     setExpandedAbhanga(null);
+    setShowTranslation(false);
+    setTranslatedContent("");
+    setTranslationError(null);
+    setTtsError(null);
+    
+    // Stop any ongoing speech when closing
+    if (window.ResponsiveVoice && window.ResponsiveVoice.isPlaying()) {
+      window.ResponsiveVoice.cancel();
+      setIsSpeaking(false);
+    }
   };
 
-  // Utility: Truncate Text (for Marathi Abhanga)
   const truncateText = (text, maxLength) => {
+    if (!text) return "";
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
-  const [currentAudio, setCurrentAudio] = useState(null);
+  const formatContent = (content) => {
+    if (!content) return "";
+    return content.split("\n").map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < content.split("\n").length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
 
-const playAudio = (audioSrc) => {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0; // Reset
-  }
-  const audio = new Audio(audioSrc);
-  setCurrentAudio(audio);
-  audio.play();
-};
-
-
-<Button variant="warning" onClick={() => playAudio(abhang.audio)}>
-🎵 Listen
-</Button>
-
+  const toggleTranslationDirection = () => {
+    setTranslationDirection(prev => prev === "mr-en" ? "en-mr" : "mr-en");
+    setShowTranslation(false);
+    setTranslatedContent("");
+  };
 
 
+  const translateWithMyMemory = async (text, sourceLang, targetLang) => {
+    try {
+      const encodedText = encodeURIComponent(text);
+      const url = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${sourceLang}|${targetLang}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.responseData.translatedText;
+    } catch (error) {
+      console.error("Translation API Error:", error);
+      throw error;
+    }
+  };
+
+  // Use it in translation
+  const handleTranslation = async () => {
+    if (!expandedAbhanga || !expandedAbhanga.content) return;
+
+    setIsTranslating(true);
+    setTranslationError(null);
+
+    try {
+      const [sourceLang, targetLang] = translationDirection === "mr-en"
+        ? ["mr", "en"]
+        : ["en", "mr"];
+
+      const textToTranslate = showTranslation ? translatedContent : expandedAbhanga.content;
+      
+      const translated = await translateWithMyMemory(textToTranslate, sourceLang, targetLang);
+
+      setTranslatedContent(translated);
+      setShowTranslation(true);
+    } catch (err) {
+      console.error("Translation error:", err);
+      setTranslationError("Translation failed. Please try again later.");
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+  
   return (
     <div>
-      {/* Imported Navbar */}
       {/* Hero Section */}
       <section className="hero-section text-center">
         <Container>
@@ -182,8 +192,11 @@ const playAudio = (audioSrc) => {
               onChange={(e) => setSelectedTheme(e.target.value)}
             >
               <option value="All">All Themes</option>
-              <option value="Devotion">Devotion</option>
-              <option value="Faith">Faith</option>
+              {uniqueCategories.map((category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              ))}
             </Form.Select>
           </Col>
         </Row>
@@ -192,70 +205,137 @@ const playAudio = (audioSrc) => {
       {/* Abhanga Collection */}
       <section className="abhang-collection">
         <Container>
-          <Row>
-            {expandedAbhanga ? (
-              <Col md={12} className="expanded-abhanga">
-                <Card className="abhang-card expanded-card">
-                  <Card.Body>
-                    <blockquote className="abhang-text">
-                      {expandedAbhanga.marathi}
-                    </blockquote>
-                    <p className="abhang-meaning">{expandedAbhanga.meaning}</p>
-                    <Button
-                      variant="warning"
-                      onClick={() =>
-                        new Audio(expandedAbhanga.audio).play()
-                      }
-                    >
-                      🎵 Listen
-                    </Button>
-                    <Button
-                      variant="danger"
-                      className="close-btn"
-                      onClick={handleClose}
-                    >
-                      ✖ Close
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ) : (
-              filteredAbhangas.map((abhang) => (
-                <Col key={abhang.id} md={6} lg={4} className="mb-4">
-                  <Card className="abhang-card h-100">
+          {loading ? (
+            <div className="text-center my-5">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <p className="mt-2">Loading Abhangas...</p>
+            </div>
+          ) : error ? (
+            <Alert variant="danger" className="text-center my-5">
+              <p>{error}</p>
+            </Alert>
+          ) : (
+            <Row>
+              {expandedAbhanga ? (
+                <Col md={12} className="expanded-abhanga">
+                  <Card className="abhang-card expanded-card">
                     <Card.Body>
+                      <h4 className="abhang-title">{expandedAbhanga.title}</h4>
+
+                      {/* Translation Controls */}
+                      <div className="translation-controls mb-3">
+                        <Button
+                          variant="outline-secondary"
+                          onClick={toggleTranslationDirection}
+                          disabled={isTranslating}
+                        >
+                          {translationDirection === "mr-en"
+                            ? "Marathi → English"
+                            : "English → Marathi"}
+                        </Button>
+                        <Button
+                          variant="primary"
+                          className="ms-2"
+                          onClick={handleTranslation}
+                          disabled={isTranslating}
+                        >
+                          {isTranslating ? (
+                            <>
+                              <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                              />
+                              <span className="ms-2">Translating...</span>
+                            </>
+                          ) : (
+                            showTranslation ? "Translate Back" : "Translate"
+                          )}
+                        </Button>
+                      </div>
+
+                      {/* Translation error */}
+                      {translationError && (
+                        <Alert variant="danger">{translationError}</Alert>
+                      )}
+
+                      
+
+                      {/* Content */}
                       <blockquote className="abhang-text">
-                        {truncateText(abhang.marathi, 120)}
+                        {showTranslation
+                          ? formatContent(translatedContent)
+                          : formatContent(expandedAbhanga.content)}
                       </blockquote>
+
+                      {/* Translation badge */}
+                      {showTranslation && (
+                        <Badge bg="info" className="translation-badge">
+                          {translationDirection === "mr-en"
+                            ? "English Translation"
+                            : "मराठी अनुवाद"}
+                        </Badge>
+                      )}
+
+
+
+                      <div className="theme-tag mb-3 mt-3">
+                        {expandedAbhanga.category || "Miscellaneous"}
+                      </div>
+
                       <Button
-                        variant="warning"
-                        onClick={() => new Audio(abhang.audio).play()}
+                        variant="danger"
+                        className="close-btn"
+                        onClick={handleClose}
                       >
-                        🎵 Listen
-                      </Button>
-                      <Button
-                        variant="link"
-                        className="read-more"
-                        onClick={() => handleReadMore(abhang)}
-                      >
-                        Read More
+                        ✖ Close
                       </Button>
                     </Card.Body>
                   </Card>
                 </Col>
-              ))
-            )}
-          </Row>
+              ) : filteredAbhangas.length > 0 ? (
+                filteredAbhangas.map((abhang) => (
+                  <Col key={abhang._id} md={6} lg={4} className="mb-4">
+                    <Card className="abhang-card h-100">
+                      <Card.Body>
+                        <h5 className="abhang-title">{abhang.title}</h5>
+                        <blockquote className="abhang-text">
+                          {truncateText(abhang.content, 120)}
+                        </blockquote>
+                        <div className="theme-tag">
+                          {abhang.category || "Miscellaneous"}
+                        </div>
+                        <Button
+                          variant="link"
+                          className="read-more"
+                          onClick={() => handleReadMore(abhang)}
+                        >
+                          Read More
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))
+              ) : (
+                <Col md={12}>
+                  <div className="text-center my-5">
+                    <p>No Abhangas found matching your search criteria.</p>
+                  </div>
+                </Col>
+              )}
+            </Row>
+          )}
         </Container>
       </section>
 
       {/* Footer */}
       <footer className="footer text-center">
         <Container>
-          <p>
-            &copy; {new Date().getFullYear()} Sant Tukaram Maharaj | All Rights
-            Reserved
-          </p>
+          <p>&copy; {new Date().getFullYear()} Sant Tukaram Maharaj | All Rights Reserved</p>
         </Container>
       </footer>
     </div>

@@ -35,16 +35,11 @@ const getPendingAbhangas = asyncHandler(async (req, res) => {
 });
 
 const getApprovedAbhangas = asyncHandler(async (req, res) => {
-    const { category } = req.body;
-
-    if (!category) {
-        throw new ApiError(400, "Category is required to fetch Abhangas");
-    }
-
-    const approvedAbhangas = await Abhanga.find({ status: "approved", category });
+    
+   const approvedAbhangas = await Abhanga.find({ status: "approved" });
 
     return res.status(200).json(
-        new ApiResponse(200, approvedAbhangas, `Approved Abhangas for category: ${category}`)
+        new ApiResponse(200, approvedAbhangas, `Approved Abhangas `)
     );
 });
 
@@ -71,11 +66,27 @@ const updateAbhangaStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const getAllAbhangas = asyncHandler(async (req, res) => {
+    const abhangas = await Abhanga.find(); // No filter at all
 
+    return res.status(200).json(
+        new ApiResponse(200, abhangas, "Fetched all Abhangas successfully")
+    );
+});
+
+const getuserAbhangas = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const abhangas = await Abhanga.find({ createdBy: userId });
+
+    return res.status(200).json(
+        new ApiResponse(200, abhangas, "Fetched user's Abhangas successfully")
+    );
+});
 
 export {
     submitAbhanga,
     getPendingAbhangas,
     updateAbhangaStatus,
-    getApprovedAbhangas
+    getApprovedAbhangas,
+    getuserAbhangas
 };

@@ -74,4 +74,20 @@ const Reset_Password = async (newPassword, role) => {
   }
 }
 
-export { loginUser, signupUser, logoutUser, sentotp, verify_otp, Reset_Password };
+const updateUserDetails = async (userData) => {
+  try {
+    const response = await axiosInstance.put('users/change-user-details', userData); // Adjust URL as per your API route
+    console.log("User details updated:", response.data); // Debugging line
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    if (error.response) {
+      throw error.response.data; // Return the error response from the server
+    }
+    throw new Error('Network error occurred while updating user details');
+  }
+};
+
+
+
+export { loginUser, signupUser, logoutUser, sentotp, verify_otp, Reset_Password, updateUserDetails };
