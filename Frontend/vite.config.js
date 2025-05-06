@@ -13,8 +13,22 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'], // Split React into a separate chunk
-          ui: ['react-icons', 'tailwindcss'], // UI libraries (adjust based on what you use)
+          // React core
+          'react-core': ['react', 'react-dom'],
+          
+          // Routing
+          'router': ['react-router-dom'],
+          
+          // UI frameworks
+          'chakra': ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
+          'bootstrap': ['bootstrap', 'react-bootstrap'],
+          
+          // Icons and animations
+          'icons': ['react-icons', 'react-bootstrap-icons', 'lucide-react', '@fortawesome/react-fontawesome'],
+          'animations': ['framer-motion'],
+          
+          // Utilities
+          'utils': ['axios', 'js-cookie', 'react-toastify']
         }
       }
     }
