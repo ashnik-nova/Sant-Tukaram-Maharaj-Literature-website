@@ -15,7 +15,6 @@ const CustomNavbar = () => {
   const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
-    // Only update context if values are different to prevent infinite loops
     const userCookie = Cookies.get("user");
     const userTypeCookie = Cookies.get("userType");
 
@@ -40,17 +39,12 @@ const CustomNavbar = () => {
     }
   }, [user, userType, updateUser, updateUserType]);
 
-  // Handle logout
   const handleLogout = async () => {
     try {
       const response = await logoutUser(userType);
       console.log(response);
-      
-      // Clear cookies
       Cookies.remove("user");
       Cookies.remove("userType");
-      
-      // Update context state
       updateUser(null);
       updateUserType(null);
       
@@ -102,7 +96,6 @@ const CustomNavbar = () => {
               </>
             ) : (
               <NavDropdown title={user?.name || "User"} id="user-nav-dropdown" align="end">
-                <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/dashboard">Dashboard</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout} className="text-danger">

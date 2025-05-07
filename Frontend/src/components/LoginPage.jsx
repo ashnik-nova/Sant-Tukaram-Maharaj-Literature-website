@@ -71,10 +71,6 @@ const LoginPage = () => {
   };
   
 
-  const handleGoogleLogin = () => {
-    success("Google Login Successful!");
-    navigate("/");
-  };
 
   return (
     <div className="auth-container">
@@ -139,13 +135,7 @@ const LoginPage = () => {
                   {isLoading ? "Logging in..." : "Login as User"}
                 </Button>
 
-                <Button
-                  variant="outline-dark"
-                  onClick={handleGoogleLogin}
-                  className="google-btn mt-3"
-                >
-                  Login with Google
-                </Button>
+                
               </Form>
             )}
 
