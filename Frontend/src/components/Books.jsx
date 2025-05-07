@@ -177,7 +177,6 @@ const books = [
 const Books = () => {
   return (
     <div>
-      <CustomNavbar />
       <Container className="books-page">
         <h1 className="text-center mb-4 ">📚 Book Store</h1>
         <Row>

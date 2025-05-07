@@ -29,11 +29,11 @@ const useUserData = () => {
     // Function to update user data
     const updateUser = (newUser) => {
         if (!newUser) {
-            // Remove cookies and reset user state if newUser is null
+     
             Cookies.remove("user");
             setUser(null);
         } else {
-            // Store the new user in cookies for 7 days and set in state
+
             Cookies.set("user", JSON.stringify(newUser), { expires: 7, secure: true, sameSite: "Strict" });
             setUser(newUser);
         }
