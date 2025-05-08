@@ -167,7 +167,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: false
+        secure: false,
+        sameSite: 'None',
+
     }
 
     return res
@@ -219,7 +221,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: false
+            secure: false,
+            sameSite: 'None',
         }
 
         return res
@@ -284,6 +287,7 @@ const ForgetPassword = asyncHandler(async (req, res) => {
         const options = {
             httpOnly: true,
             secure: false,
+            sameSite: 'None',
             expires: new Date(Date.now() + otpTokenExpiry * 1000)
         }
         return res

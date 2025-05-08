@@ -105,7 +105,8 @@ const loginAdmin = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: false
+        secure: false,
+        sameSite: 'None',
     };
 
     res.cookie("accessToken", accessToken, {
