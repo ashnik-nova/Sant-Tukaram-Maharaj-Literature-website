@@ -111,7 +111,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'None',
     };
 
@@ -167,7 +167,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'None',
 
     }
@@ -221,7 +221,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'None',
         }
 
@@ -286,7 +286,7 @@ const ForgetPassword = asyncHandler(async (req, res) => {
         const otpTokenExpiry = 5 * 60;
         const options = {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'None',
             expires: new Date(Date.now() + otpTokenExpiry * 1000)
         }
