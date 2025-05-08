@@ -45,7 +45,7 @@ const useUserData = () => {
             setUserType("user");
         } else {
             setUserType(type);
-            // Store userType instead of role in cookies
+           
             Cookies.set("userType", type, { expires: 7, secure: true, sameSite: "Strict" });
         }
     };
