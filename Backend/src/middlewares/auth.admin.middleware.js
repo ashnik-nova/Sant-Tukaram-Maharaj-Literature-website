@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const authAdmin = asyncHandler( async (req, res, next) => {
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-
+    console.log(token, "token in authAdmin middleware");
     if (!token) {
         throw new ApiError(401, "Access token is required");
     }

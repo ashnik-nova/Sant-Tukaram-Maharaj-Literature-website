@@ -14,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'https://sant-tukaram-maharaj-literature-frontend.onrender.com',
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
